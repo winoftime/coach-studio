@@ -1,0 +1,20 @@
+# Python & environments
+__pycache__/
+*.py[cod]
+*.class
+venv/
+env/
+.env
+
+# Build artifacts & executables
+build/
+dist/
+*.exe
+*.spec
+
+# Office temporary files
+~$*.xlsx
+~$*.csv
+
+# Scratch
+scratch/
