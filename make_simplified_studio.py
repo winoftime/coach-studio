@@ -2517,6 +2517,31 @@ body {
     display: none !important;
   }
 
+
+  /* History Card and Calendar Modal Mobile Enhancements */
+  .cal-assign-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+  .cal-assign-submit-btn {
+    width: 100% !important;
+    height: 42px !important;
+    font-size: 0.88em !important;
+    font-weight: 800 !important;
+    justify-content: center !important;
+  }
+  .status-pill-group {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 6px !important;
+  }
+  .status-pill-btn {
+    justify-content: center !important;
+    text-align: center !important;
+    font-size: 0.78em !important;
+    padding: 6px 2px !important;
+  }
+
 }
 
 """
@@ -3580,7 +3605,7 @@ STUDIO_HTML = """
             <input type="date" id="cal-log-date" class="form-input">
           </div>
 
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div class="cal-assign-grid">
             <div class="form-group">
               <label class="form-label">Athlete</label>
               <select id="cal-log-athlete" class="form-input" onchange="onCalLogAthleteChange()">
@@ -3612,7 +3637,7 @@ STUDIO_HTML = """
           </div>
 
           <div style="display:flex; justify-content:flex-end;">
-            <button class="btn-header btn-header-primary" onclick="saveCalendarDayLog()">{MUI_ICONS['save']} Assign Workout to Date</button>
+            <button class="btn-header btn-header-primary cal-assign-submit-btn" onclick="saveCalendarDayLog()">{MUI_ICONS['save']} Assign Workout to Date</button>
           </div>
         </div>
       </div>
@@ -8320,12 +8345,8 @@ function renderCalDayWorkoutsInspector(dateStr, highlightLogId = null) {
 
   if (dayLogs.length === 0) {
     container.innerHTML = `
-      <div style="text-align:center; padding:28px 16px; background:rgba(255,255,255,0.02); border:1px dashed var(--border); border-radius:12px; color:var(--text-dim);">
-        <div style="font-size:1.05em; font-weight:700; color:var(--text-main); margin-bottom:4px;">No workouts assigned on this date</div>
-        <div style="font-size:0.82em; color:var(--text-muted); margin-bottom:12px;">Use the section below to assign an athlete routine or log a completed session.</div>
-        <button type="button" class="btn-header btn-header-primary" onclick="toggleCalAssignBox(true)" style="font-size:0.82em; padding:6px 14px;">
-          ${MUI.add} Assign Workout
-        </button>
+      <div style="text-align:center; padding:12px 10px; background:rgba(255,255,255,0.02); border:1px dashed var(--border); border-radius:10px; color:var(--text-dim); font-size:0.82em;">
+        No workouts recorded on this date. Assign or log below:
       </div>
     `;
     toggleCalAssignBox(true);
@@ -8884,24 +8905,21 @@ function renderAthleteHistorySection(ath) {
       : `<span class="history-item-summary">${escapeHtml(l.exercisesSummary || 'Workout session')}</span>`;
 
     return `
-      <div class="history-item-row">
-        <div style="display:flex; align-items:flex-start; gap:12px; flex:1;">
-          <div class="history-date-badge">${escapeHtml(l.date || 'No date')}</div>
-          <div style="flex:1;">
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span class="history-item-title">${escapeHtml(l.sessionTitle || 'Workout Session')}</span>
-              <span class="cal-session-badge ${statusClass}" style="padding:2px 7px; font-size:0.7em;">${statusClass.toUpperCase()}</span>
-            </div>
-            <div style="margin-top:4px;">
-              ${exercisesDetails}
-            </div>
-            ${l.notes ? `<div class="history-item-notes">Coach Notes: "${escapeHtml(l.notes)}"</div>` : ''}
+      <div class="history-item-card">
+        <div class="history-item-header">
+          <div class="history-header-left">
+            <span class="history-date-badge">${escapeHtml(l.date || 'No date')}</span>
+            <span class="history-item-title">${escapeHtml(l.sessionTitle || 'Workout Session')}</span>
+            <span class="cal-session-badge ${statusClass}" style="padding:2px 7px; font-size:0.7em;">${statusClass.toUpperCase()}</span>
           </div>
+          <button type="button" class="history-btn-del" onclick="deleteCalendarLog('${l.id}', '${ath.id}')" title="Delete Log">
+            ${MUI.delete}
+          </button>
         </div>
-
-        <button type="button" class="btn-header" style="padding:4px 8px; font-size:0.75em; color:var(--rose);" onclick="deleteCalendarLog('${l.id}', '${ath.id}')" title="Delete Log">
-          ${MUI.delete}
-        </button>
+        <div class="history-item-body">
+          <div class="history-exercises-wrap">${exercisesDetails}</div>
+          ${l.notes ? `<div class="history-item-notes">Coach Notes: "${escapeHtml(l.notes)}"</div>` : ''}
+        </div>
       </div>
     `;
   }).join('');
