@@ -603,12 +603,19 @@ body {
 .view-screen {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  display: flex;
+  display: none;
   flex-direction: column;
   overflow-y: auto;
+  background: var(--bg-main);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.18s ease;
+}
+.view-screen.active {
+  display: flex;
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 10;
 }
 .view-screen.active {
   opacity: 1;
@@ -632,6 +639,87 @@ body {
   padding: 20px 24px;
   margin-bottom: 24px;
 }
+.hub-header-info {
+  display: flex;
+  flex-direction: column;
+}
+.hub-header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.hub-search-input {
+  width: 220px;
+  padding: 8px 12px;
+}
+.athlete-profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.athlete-profile-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.athlete-profile-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.soc-header-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.soc-secondary-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.builder-tb-top, .builder-tb-mid, .builder-tb-bottom {
+  display: contents;
+}
+.hub-header-info {
+  display: flex;
+  flex-direction: column;
+}
+.hub-header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.athlete-profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.athlete-profile-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.athlete-profile-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.soc-header-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.soc-secondary-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.builder-tb-top, .builder-tb-mid, .builder-tb-bottom {
+  display: contents;
+}
+
 .athlete-badge-count {
   font-size: 0.68em;
   background: var(--teal-glow);
@@ -1808,14 +1896,29 @@ body {
 
 @media (max-width: 768px) {
   /* Safe viewport height & padding for Android system gestures */
+  html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
   body {
     padding-bottom: calc(68px + env(safe-area-inset-bottom, 14px)) !important;
+  }
+
+  .view-viewport,
+  .view-screen {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
   }
 
   /* Compact Mobile Top App Bar */
   .master-header {
     padding: 10px 14px !important;
     gap: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
   .header-nav-tabs,
   #nav-breadcrumb,
@@ -1832,6 +1935,7 @@ body {
   .btn-header {
     padding: 6px 10px !important;
     font-size: 0.82em !important;
+    box-sizing: border-box !important;
   }
 
   /* Native Mobile Bottom Navigation Bar */
@@ -1951,6 +2055,8 @@ body {
     background: var(--bg-card) !important;
     border: 1px solid var(--border) !important;
     margin-bottom: 12px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .exercise-row .row-left {
@@ -2037,17 +2143,380 @@ body {
     line-height: 1.35;
   }
 
-  /* Athlete hub cards & buttons */
-  .hub-content {
-    padding: 12px !important;
+  /* Mobile Content Padding */
+  .hub-content,
+  .athlete-detail-content,
+  .builder-content {
+    padding: 12px 14px 80px 14px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
-  .athletes-grid {
+
+  .athletes-grid,
+  .templates-grid {
     grid-template-columns: 1fr !important;
     gap: 12px !important;
+    width: 100% !important;
   }
-  .athlete-card {
+  .athlete-roster-card {
     padding: 14px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
+
+  /* Hub Header Bar Mobile Stacking */
+  .hub-header-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 14px !important;
+    margin-bottom: 14px !important;
+    gap: 12px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .hub-header-info {
+    width: 100% !important;
+  }
+  .hub-header-actions {
+    display: flex !important;
+    gap: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .hub-search-input,
+  #athlete-search-input,
+  #template-search-input {
+    flex: 1 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    padding: 8px 10px !important;
+  }
+  .hub-header-actions .btn-header-primary {
+    flex-shrink: 0 !important;
+    padding: 0 12px !important;
+    font-size: 0.82em !important;
+    white-space: nowrap !important;
+  }
+
+  /* Athlete Profile Header Mobile */
+  .athlete-profile-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    margin-bottom: 14px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .athlete-profile-info {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+  .athlete-profile-actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 6px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .athlete-profile-actions .btn-header {
+    justify-content: center !important;
+    padding: 0 2px !important;
+    font-size: 0.74em !important;
+    height: 38px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* Athlete Notes & Comments Textarea */
+  .athlete-comments-card {
+    padding: 14px !important;
+    margin-bottom: 14px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .comments-textarea {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-height: 80px !important;
+  }
+
+  /* Sessions Manager Header Bar */
+  .sessions-manager-bar {
+    margin-bottom: 12px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .sessions-manager-title {
+    font-size: 1.05em !important;
+    min-width: 0 !important;
+  }
+  .sessions-manager-bar .btn-header-primary {
+    font-size: 0.78em !important;
+    padding: 0 10px !important;
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+  }
+
+  /* Mobile Session Overview Cards (Zero Overlap & Touch-Friendly) */
+  .session-overview-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 14px !important;
+    gap: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .soc-left {
+    width: 100% !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    min-width: 0 !important;
+  }
+  .soc-header-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+    flex-wrap: wrap !important;
+  }
+  .soc-title {
+    flex: 1 !important;
+    min-width: 100px !important;
+    font-size: 1.02em !important;
+    font-weight: 800 !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    margin-bottom: 0 !important;
+  }
+  .soc-type-badge {
+    margin-left: auto !important;
+  }
+  .soc-badges {
+    display: flex !important;
+    gap: 6px !important;
+    flex-wrap: wrap !important;
+  }
+  .soc-preview-exercises {
+    font-size: 0.76em !important;
+    color: var(--text-dim) !important;
+    white-space: normal !important;
+    line-height: 1.35 !important;
+    word-break: break-word !important;
+  }
+  .soc-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    width: 100% !important;
+    padding-top: 10px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+  }
+  .soc-btn-edit {
+    width: 100% !important;
+    height: 42px !important;
+    font-size: 0.88em !important;
+    font-weight: 800 !important;
+    justify-content: center !important;
+    color: var(--teal) !important;
+    background: rgba(0, 229, 255, 0.08) !important;
+    border-color: rgba(0, 229, 255, 0.35) !important;
+  }
+  .soc-secondary-actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr 40px !important;
+    gap: 6px !important;
+    width: 100% !important;
+  }
+  .soc-btn-sub {
+    height: 36px !important;
+    padding: 0 4px !important;
+    font-size: 0.74em !important;
+    justify-content: center !important;
+  }
+  .soc-btn-del {
+    height: 36px !important;
+    width: 40px !important;
+    padding: 0 !important;
+    justify-content: center !important;
+  }
+
+  /* Athlete History Timeline Mobile */
+  .athlete-history-card {
+    padding: 14px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .history-card-header {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+  .history-card-header > div:first-child {
+    font-size: 0.95em !important;
+  }
+  .history-item-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .history-item-row > div:first-child {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  .history-item-summary {
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    display: inline !important;
+  }
+
+  /* Workout Builder Toolbar & Add Bar Mobile */
+  .builder-toolbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    padding: 10px 12px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .builder-tb-top {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+  .builder-tb-mid {
+    display: flex !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+  .builder-tb-mid .builder-session-input {
+    flex: 1 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+  .builder-tb-mid select {
+    width: 120px !important;
+    flex-shrink: 0 !important;
+  }
+  .builder-tb-bottom {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+  .builder-tb-bottom .btn-header {
+    justify-content: center !important;
+    font-size: 0.78em !important;
+  }
+  .add-bar {
+    flex-direction: column !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+  .btn-add-action {
+    width: 100% !important;
+    padding: 12px !important;
+    font-size: 0.84em !important;
+  }
+
+  /* Calendar Toolbar & Grid Mobile (Zero Overflow & 7-Col minmax) */
+  .calendar-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .calendar-controls-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 12px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .cal-nav-group {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+  .cal-month-title {
+    min-width: 0 !important;
+    font-size: 1em !important;
+  }
+  .cal-filter-group {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    gap: 8px !important;
+  }
+  .cal-filter-group select {
+    flex: 1 !important;
+    min-width: 0 !important;
+  }
+  .calendar-weekdays-grid {
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    width: 100% !important;
+    font-size: 0.65em !important;
+    padding: 6px 0 !important;
+  }
+  .calendar-days-grid {
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    width: 100% !important;
+  }
+  .calendar-day-cell {
+    min-height: 56px !important;
+    padding: 2px !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+  .cal-day-header {
+    margin-bottom: 2px !important;
+  }
+  .cal-day-number {
+    font-size: 0.68em !important;
+  }
+  .cal-add-log-btn {
+    display: none !important;
+  }
+  .cal-badges-container {
+    width: 100% !important;
+    min-width: 0 !important;
+    gap: 2px !important;
+  }
+  .cal-session-badge {
+    font-size: 0.6em !important;
+    padding: 2px 3px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    display: block !important;
+  }
+  .cal-session-badge > span {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  .cal-session-badge .cal-badge-ath-avatar {
+    display: none !important;
+  }
+
 }
 
 """
@@ -2138,15 +2607,15 @@ STUDIO_HTML = """
   <div class="view-screen active" id="view-hub">
     <div class="hub-content">
       <div class="hub-header-bar">
-        <div>
+        <div class="hub-header-info">
           <div style="font-size:1.3em; font-weight:800; color:var(--text-main); display:flex; align-items:center; gap:10px;">
             <span>{MUI_ICONS['athletes']} Athlete Directory</span>
             <span class="athlete-badge-count" id="athlete-count-badge">2 Athletes</span>
           </div>
           <div style="font-size:0.84em; color:var(--text-muted); margin-top:4px;">Select an athlete to view their sessions, manage comments, or build programs.</div>
         </div>
-        <div style="display:flex; gap:10px; align-items:center;">
-          <input type="text" id="athlete-search-input" class="form-input" style="width:220px; padding:8px 12px;" placeholder="Search athletes..." oninput="renderAthletesHub()">
+        <div class="hub-header-actions">
+          <input type="text" id="athlete-search-input" class="form-input hub-search-input" placeholder="Search athletes..." oninput="renderAthletesHub()">
           <button class="btn-header btn-header-primary" onclick="openNewAthleteModal()">
             {MUI_ICONS['add']} New Athlete
           </button>
@@ -2164,8 +2633,8 @@ STUDIO_HTML = """
     <div class="athlete-detail-content">
       
       <!-- Athlete Header Bar -->
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-        <div style="display:flex; align-items:center; gap:14px;">
+      <div class="athlete-profile-header">
+        <div class="athlete-profile-info">
           <div class="athlete-avatar-circle" id="detail-athlete-avatar">JS</div>
           <div>
             <h2 style="font-size:1.45em; font-weight:800; color:var(--text-main);" id="detail-athlete-name">Jada Said</h2>
@@ -2173,7 +2642,7 @@ STUDIO_HTML = """
           </div>
         </div>
 
-        <div style="display:flex; gap:8px; align-items:center;">
+        <div class="athlete-profile-actions">
           <button class="btn-header" onclick="openPreviewModal()">
             {MUI_ICONS['phone']} Preview
           </button>
@@ -2181,7 +2650,7 @@ STUDIO_HTML = """
             {MUI_ICONS['whatsapp']} WhatsApp
           </button>
           <button class="btn-header btn-header-primary" onclick="openExportSessionsModal()">
-            {MUI_ICONS['export']} Export App (.html)
+            {MUI_ICONS['export']} Export App
           </button>
         </div>
       </div>
@@ -2206,7 +2675,7 @@ STUDIO_HTML = """
           <span class="athlete-badge-count" id="detail-sessions-count">10 Sessions</span>
         </div>
         <button class="btn-header btn-header-primary" onclick="createNewSessionPrompt()">
-          {MUI_ICONS['add']} Add New Session
+          {MUI_ICONS['add']} Add Session
         </button>
       </div>
 
@@ -2244,29 +2713,29 @@ STUDIO_HTML = """
     <div class="builder-content">
       
       <div class="builder-toolbar">
-        <button class="btn-nav-crumb" onclick="navigateTo('athlete')" title="Back to All Sessions">
-          {MUI_ICONS['arrow_back']} <span>Back to Sessions</span>
-        </button>
+        <div class="builder-tb-top">
+          <button class="btn-nav-crumb" onclick="navigateTo('athlete')" title="Back to All Sessions">
+            {MUI_ICONS['arrow_back']} <span>Back to Sessions</span>
+          </button>
+          <button class="btn-header btn-header-primary" onclick="saveActiveAthleteRoutine()">
+            {MUI_ICONS['save']} Save Routine
+          </button>
+        </div>
 
-        <div class="toolbar-divider"></div>
+        <div class="builder-tb-mid">
+          <input type="text" id="builder-session-title" class="builder-session-input" placeholder="Session Title" onchange="updateActiveSessionTitle(this.value)">
+          <select id="builder-session-type" class="form-input" style="width:130px; font-weight:700;" onchange="updateActiveSessionType(this.value)">
+            <option value="exercises">Exercise List</option>
+            <option value="table">Weekly Plan</option>
+          </select>
+        </div>
 
-        <input type="text" id="builder-session-title" class="builder-session-input" placeholder="Session Title" onchange="updateActiveSessionTitle(this.value)">
-        <select id="builder-session-type" class="form-input" style="width:130px; font-weight:700;" onchange="updateActiveSessionType(this.value)">
-          <option value="exercises">Exercise List</option>
-          <option value="table">Weekly Plan</option>
-        </select>
-
-        <div style="flex:1;"></div>
-
-        <div style="display:flex; gap:10px; align-items:center;">
+        <div class="builder-tb-bottom">
           <button class="btn-header" onclick="openCopySessionModal(activeSessionIndex)">
             Copy to Athlete...
           </button>
           <button class="btn-header" onclick="openPreviewModal()">
             {MUI_ICONS['phone']} Preview
-          </button>
-          <button class="btn-header btn-header-primary" onclick="saveActiveAthleteRoutine()">
-            {MUI_ICONS['save']} Save Routine
           </button>
         </div>
       </div>
@@ -2296,7 +2765,7 @@ STUDIO_HTML = """
   <div class="view-screen" id="view-calendar">
     <div class="hub-content">
       <div class="hub-header-bar">
-        <div>
+        <div class="hub-header-info">
           <div style="font-size:1.3em; font-weight:800; color:var(--text-main); display:flex; align-items:center; gap:10px;">
             <span>{MUI_ICONS['calendar']} Athlete Training Calendar</span>
             <span class="athlete-badge-count" id="calendar-total-logs-badge">0 Logs</span>
@@ -2305,7 +2774,7 @@ STUDIO_HTML = """
             Track when each athlete performed their sessions, log completed workouts, and import athlete recaps.
           </div>
         </div>
-        <div style="display:flex; gap:10px; align-items:center;">
+        <div class="hub-header-actions">
           <button class="btn-header" onclick="openImportRecapModal()">
             {MUI_ICONS['copy']} Import Recap
           </button>
@@ -2365,15 +2834,15 @@ STUDIO_HTML = """
   <div class="view-screen" id="view-templates">
     <div class="hub-content">
       <div class="hub-header-bar">
-        <div>
+        <div class="hub-header-info">
           <div style="font-size:1.3em; font-weight:800; color:var(--text-main); display:flex; align-items:center; gap:10px;">
             <span>{MUI_ICONS['templates']} Master Session Templates</span>
             <span class="athlete-badge-count" id="template-count-badge">4 Templates</span>
           </div>
           <div style="font-size:0.84em; color:var(--text-muted); margin-top:4px;">Master workout blueprints you can seamlessly assign to any athlete with custom names.</div>
         </div>
-        <div style="display:flex; gap:10px; align-items:center;">
-          <input type="text" id="template-search-input" class="form-input" style="width:220px; padding:8px 12px;" placeholder="Search templates..." oninput="renderTemplatesView()">
+        <div class="hub-header-actions">
+          <input type="text" id="template-search-input" class="form-input hub-search-input" placeholder="Search templates..." oninput="renderTemplatesView()">
           <button class="btn-header btn-header-primary" onclick="openCreateTemplateModal()">
             {MUI_ICONS['add']} New Template
           </button>
@@ -3880,34 +4349,38 @@ function renderAthleteDetail() {
     return `
       <div class="session-overview-card">
         <div class="soc-left" onclick="navigateTo('builder', '${ath.id}', ${idx})" style="cursor:pointer;">
-          <div class="soc-num">#${idx + 1}</div>
-          <div class="soc-title-wrap">
+          <div class="soc-header-row">
+            <div class="soc-num">#${idx + 1}</div>
             <div class="soc-title">${escapeHtml(p.title || p.nav_title || 'Session')}</div>
-            <div class="soc-badges">
-              <span class="soc-badge">${p.type === 'table' ? MUI.calendar + ' Weekly Plan' : MUI.dumbbell + ' Workout Routine'}</span>
-              <span class="soc-badge">${cards.length} Exercises</span>
-              <span class="soc-badge">${totalSets} Total Sets</span>
-            </div>
-            <div class="soc-preview-exercises">
-              ${escapeHtml(previewList || 'No exercises added yet')} ${cards.length > 4 ? `(+${cards.length - 4} more)` : ''}
-            </div>
+            <span class="soc-badge soc-type-badge">${p.type === 'table' ? MUI.calendar + ' Weekly Plan' : MUI.dumbbell + ' Routine'}</span>
+          </div>
+          <div class="soc-badges">
+            <span class="soc-badge">${cards.length} Exercises</span>
+            <span class="soc-badge">${totalSets} Total Sets</span>
+          </div>
+          <div class="soc-preview-exercises">
+            ${escapeHtml(previewList || 'No exercises added yet')} ${cards.length > 4 ? `(+${cards.length - 4} more)` : ''}
           </div>
         </div>
 
         <div class="soc-actions">
-          <button class="btn-header" style="color:var(--teal); border-color:rgba(0,229,255,0.3);" onclick="navigateTo('builder', '${ath.id}', ${idx})">
-            ${MUI.edit} Edit
+          <button class="btn-header soc-btn-edit" onclick="navigateTo('builder', '${ath.id}', ${idx})">
+            ${MUI.edit} Edit Workout Routine
           </button>
-          <button class="btn-header" title="Save as Master Template" onclick="saveSessionAsTemplate(${idx})">
-            ${MUI.save} Save as Template
-          </button>
-          <button class="btn-header" title="Copy to Another Athlete" onclick="openCopySessionModal(${idx})">
-            ${MUI.copy} Copy to...
-          </button>
-          <button class="btn-header" title="Duplicate Session" onclick="duplicateSessionInAthlete(${idx})">
-            ${MUI.duplicate} Duplicate
-          </button>
-          <button class="btn-header" title="Delete Session" style="color:var(--rose);" onclick="deleteSessionPrompt(${idx})">${MUI.delete}</button>
+          <div class="soc-secondary-actions">
+            <button class="btn-header soc-btn-sub" title="Save as Master Template" onclick="saveSessionAsTemplate(${idx})">
+              ${MUI.save} <span class="soc-sub-text">Template</span>
+            </button>
+            <button class="btn-header soc-btn-sub" title="Copy to Another Athlete" onclick="openCopySessionModal(${idx})">
+              ${MUI.copy} <span class="soc-sub-text">Copy</span>
+            </button>
+            <button class="btn-header soc-btn-sub" title="Duplicate Session" onclick="duplicateSessionInAthlete(${idx})">
+              ${MUI.duplicate} <span class="soc-sub-text">Duplicate</span>
+            </button>
+            <button class="btn-header soc-btn-del" title="Delete Session" style="color:var(--rose);" onclick="deleteSessionPrompt(${idx})">
+              ${MUI.delete}
+            </button>
+          </div>
         </div>
       </div>
     `;
