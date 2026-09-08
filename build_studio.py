@@ -8045,9 +8045,22 @@ body.focus-open {
   border-left: 3px solid #A78BFA !important;
 }
 
+
+/* iOS Safari Auto-Zoom Prevention */
+@media screen and (max-width: 768px) {
+  .set-input, input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
 </style>
 </head>
 <body>
+<noscript>
+  <div style="background:#EF4444; color:#FFF; padding:14px 16px; text-align:center; font-weight:700; font-size:0.9em; line-height:1.4;">
+    Notice: JavaScript is blocked by Apple QuickLook preview. Tap the Share icon and choose "Open in Safari" to interact with workouts.
+  </div>
+</noscript>
 <div class="header">
   <div class="header-top">
     <div class="header-titles">
