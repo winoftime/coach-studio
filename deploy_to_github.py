@@ -47,7 +47,13 @@ else:
 
 # 3. Stage & Commit
 print("\n[3/4] Staging and committing files...")
-subprocess.run(["git", "add", ".gitignore", "index.html", "builder.html", "build_studio.py", "make_simplified_studio.py"], check=True)
+subprocess.run(["git", "add", ".gitignore", "index.html", "builder.html", "build_studio.py", "make_simplified_studio.py", "deploy_to_github.py"], check=True)
+
+# Ensure Git author identity is set
+name_check = subprocess.run(["git", "config", "user.name"], capture_output=True, text=True)
+if not name_check.stdout.strip():
+    subprocess.run(["git", "config", "user.name", "winoftime"], check=True)
+    subprocess.run(["git", "config", "user.email", "winoftime@users.noreply.github.com"], check=True)
 
 status_res = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True)
 if status_res.stdout.strip():
