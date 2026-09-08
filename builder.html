@@ -2324,6 +2324,44 @@ body {
 
 }
 
+.plan-day-row {
+  align-items: flex-start !important;
+  padding: 14px 16px !important;
+}
+.plan-day-row .row-left {
+  flex: 1 !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+}
+.plan-day-badge {
+  font-size: 0.76em !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  color: var(--purple) !important;
+  background: rgba(167, 139, 250, 0.15) !important;
+  padding: 3px 8px !important;
+  border-radius: 6px !important;
+}
+.plan-day-focus {
+  font-size: 1.05em !important;
+  font-weight: 700 !important;
+  color: var(--text-main) !important;
+}
+.plan-day-details {
+  font-size: 0.85em !important;
+  color: var(--text-muted) !important;
+  line-height: 1.5 !important;
+  white-space: pre-line !important;
+  margin-top: 6px !important;
+  background: rgba(0, 0, 0, 0.22) !important;
+  border-radius: 8px !important;
+  padding: 8px 12px !important;
+  border-left: 3px solid var(--purple) !important;
+}
+
+
 
 </style>
 </head>
@@ -2553,7 +2591,7 @@ body {
       </div>
 
       <!-- Add Actions -->
-      <div class="add-bar">
+      <div class="add-bar" id="builder-add-bar">
         <button class="btn-add-action" onclick="openExerciseModal(null)">
           <svg class="mui-icon" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg> Add Blank Exercise
         </button>
@@ -2970,6 +3008,56 @@ body {
     <div class="modal-footer-bar">
       <button class="btn-header" onclick="closeModal('copy-session-modal')">Cancel</button>
       <button class="btn-header btn-header-primary" onclick="confirmCopySessionToAthlete()">Copy Workout</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: EDIT DAY / SCHEDULE BLOCK -->
+<div class="modal-overlay" id="day-modal">
+  <div class="modal-window">
+    <div class="sheet-drag-pill"></div>
+    <div class="modal-header-bar">
+      <div class="modal-title" id="day-modal-title"><svg class="mui-icon" viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg> Edit Schedule Day</div>
+      <button class="modal-close-btn" onclick="closeModal('day-modal')"><svg class="mui-icon" viewBox="0 0 24 24" style="width:18px;height:18px;"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Day Label / Name *</label>
+      <div class="quick-chips-bar" style="margin-bottom:8px; display:flex; flex-wrap:wrap; gap:6px;">
+        <button type="button" class="quick-chip" onclick="quickFillDayField('modal-day-name', 'Monday')">Monday</button>
+        <button type="button" class="quick-chip" onclick="quickFillDayField('modal-day-name', 'Tuesday')">Tuesday</button>
+        <button type="button" class="quick-chip" onclick="quickFillDayField('modal-day-name', 'Wednesday')">Wednesday</button>
+        <button type="button" class="quick-chip" onclick="quickFillDayField('modal-day-name', 'Thursday')">Thursday</button>
+        <button type="button" class="quick-chip" onclick="quickFillDayField('modal-day-name', 'Friday')">Friday</button>
+        <button type="button" class="quick-chip" onclick="quickFillDayField('modal-day-name', 'Saturday')">Saturday</button>
+        <button type="button" class="quick-chip" onclick="quickFillDayField('modal-day-name', 'Sunday')">Sunday</button>
+        <button type="button" class="quick-chip" onclick="quickFillDayField('modal-day-name', 'Rest Day')">Rest Day</button>
+      </div>
+      <input type="text" id="modal-day-name" class="form-input" placeholder="e.g. Monday or Day 1 - Push">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Training Focus / Title</label>
+      <div class="quick-chips-bar" style="margin-bottom:8px; display:flex; flex-wrap:wrap; gap:6px;">
+        <button type="button" class="quick-chip" onclick="quickFillDayField('modal-day-focus', 'Upper Body Power')">Upper Body</button>
+        <button type="button" class="quick-chip" onclick="quickFillDayField('modal-day-focus', 'Lower Body Strength')">Lower Body</button>
+        <button type="button" class="quick-chip" onclick="quickFillDayField('modal-day-focus', 'Push (Chest/Shoulders/Triceps)')">Push</button>
+        <button type="button" class="quick-chip" onclick="quickFillDayField('modal-day-focus', 'Pull (Back/Biceps)')">Pull</button>
+        <button type="button" class="quick-chip" onclick="quickFillDayField('modal-day-focus', 'Legs & Core')">Legs</button>
+        <button type="button" class="quick-chip" onclick="quickFillDayField('modal-day-focus', 'Conditioning & Mobility')">Conditioning</button>
+        <button type="button" class="quick-chip" onclick="quickFillDayField('modal-day-focus', 'Full Recovery & Rest')">Recovery</button>
+      </div>
+      <input type="text" id="modal-day-focus" class="form-input" placeholder="e.g. Upper Body Hypertrophy or Active Recovery">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Workout Overview & Prescribed Routine Details</label>
+      <textarea id="modal-day-details" class="form-textarea" style="min-height:110px; font-family:inherit; line-height:1.5;" placeholder="List exercises, sets, reps, or coaching instructions for this day"></textarea>
+    </div>
+
+    <div class="modal-footer-bar">
+      <button class="btn-header" onclick="closeModal('day-modal')">Cancel</button>
+      <button class="btn-header btn-header-primary" onclick="saveDayModal()">Save Day</button>
     </div>
   </div>
 </div>
@@ -5431,7 +5519,86 @@ function renderBuilderView() {
   }
 
   const container = document.getElementById('exercises-container');
+  const addBar = document.getElementById('builder-add-bar');
   if (!container) return;
+
+  if (page.type === 'table') {
+    // --- WEEKLY SCHEDULE MODE ---
+    if (addBar) {
+      addBar.innerHTML = `
+        <button class="btn-add-action" onclick="openDayModal(null)">
+          ${MUI.add} Add Day to Plan
+        </button>
+        <button class="btn-add-action" onclick="quickAddRestDay()" style="color:var(--teal); border-color:rgba(0,229,255,0.3);">
+          ${MUI.calendar} Quick Add Rest Day
+        </button>
+        <button class="btn-add-action" onclick="openBatchImportModal()" style="border-color:rgba(167,139,250,0.4); color:var(--purple);">
+          ${MUI.copy} Paste from Excel / CSV
+        </button>
+      `;
+    }
+
+    if (!page.cards || page.cards.length === 0) {
+      container.innerHTML = `
+        <div style="text-align:center; padding: 60px 20px; color: var(--text-dim); background: var(--bg-card); border-radius: 12px; border: 1px dashed var(--border);">
+          <div style="font-size:1.15em; font-weight:700; color:var(--text-main); margin-bottom: 6px;">Weekly Training Schedule</div>
+          <p style="font-size:0.92em; margin-bottom: 16px;">This schedule has no training days planned yet.</p>
+          <button class="btn-header btn-header-primary" onclick="openDayModal(null)">${MUI.add} Add First Day to Plan</button>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = page.cards.map((c, idx) => {
+      const dayName = escapeHtml(c.category || `Day ${idx + 1}`);
+      const dayFocus = escapeHtml(c.exercise || 'Rest / Recovery');
+      const detailsHtml = c.details ? `
+        <div class="plan-day-details">${escapeHtml(c.details)}</div>
+      ` : '';
+
+      return `
+        <div class="exercise-row plan-day-row" draggable="true" data-card-idx="${idx}" onclick="openDayModal(${idx})">
+          <div class="row-left">
+            <span class="drag-handle" onclick="event.stopPropagation()" style="margin-top:2px;">${MUI.drag}</span>
+            <span class="row-num" style="min-width:24px;">#${idx + 1}</span>
+            <div style="display:flex; flex-direction:column; gap:4px; flex:1; min-width:0;">
+              <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                <span class="plan-day-badge">${dayName}</span>
+                <span class="plan-day-focus">${dayFocus}</span>
+              </div>
+              ${detailsHtml}
+            </div>
+          </div>
+
+          <div class="row-actions" onclick="event.stopPropagation()" style="align-self:flex-start; margin-top:2px;">
+            <button type="button" class="btn-row-action edit-btn" onclick="openDayModal(${idx})">
+              ${MUI.edit} Edit
+            </button>
+            <button type="button" class="btn-row-action" title="Duplicate Day" onclick="duplicateDay(${idx})">${MUI.duplicate}</button>
+            <button type="button" class="btn-row-action danger" title="Delete" onclick="deleteDayPrompt(${idx})">${MUI.close}</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    setupDragAndDrop();
+    return;
+  }
+
+  // --- EXERCISE LIST MODE ---
+  if (addBar) {
+    addBar.innerHTML = `
+      <button class="btn-add-action" onclick="openExerciseModal(null)">
+        ${MUI.add} Add Blank Exercise
+      </button>
+      <button class="btn-add-action lib-btn" onclick="openLibraryModal()">
+        ${MUI.library} Pick from Exercise Library
+      </button>
+      <button class="btn-add-action" onclick="openBatchImportModal()" style="border-color:rgba(167,139,250,0.4); color:var(--purple);">
+        ${MUI.copy} Paste from Excel / CSV
+      </button>
+    `;
+  }
 
   if (!page.cards || page.cards.length === 0) {
     container.innerHTML = `
@@ -5450,7 +5617,7 @@ function renderBuilderView() {
     return `
     <div class="exercise-row" draggable="true" data-card-idx="${idx}" onclick="openExerciseModal(${idx})">
       <div class="row-left">
-        <span class="drag-handle" onclick="event.stopPropagation()">⠿</span>
+        <span class="drag-handle" onclick="event.stopPropagation()">${MUI.drag}</span>
         <span class="row-num">#${idx + 1}</span>
         ${supersetBadge}
         <span class="row-cat-badge">${escapeHtml(c.category || 'Exercise')}</span>
@@ -5496,8 +5663,119 @@ function updateActiveSessionType(type) {
   if (page) {
     page.type = type;
     saveAthletesToStorage();
-    showToast(` Session type updated to ${type === 'table' ? 'Weekly Plan' : 'Exercise List'}`);
+    renderBuilderView();
+    showToast(`Switched to ${type === 'table' ? 'Weekly Plan Schedule' : 'Exercise List Routine'}`);
   }
+}
+
+
+// DAY MODAL CRUD ACTIONS (WEEKLY SCHEDULE)
+let modalEditingDayIdx = null;
+
+function quickFillDayField(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.value = val;
+}
+
+function openDayModal(dayIdx) {
+  modalEditingDayIdx = dayIdx;
+  const ath = getActiveAthlete();
+  const page = ath.pages[activeSessionIndex];
+
+  if (dayIdx === null || dayIdx === undefined) {
+    document.getElementById('day-modal-title').innerHTML = `${MUI.add} Add Schedule Day`;
+    const count = (page.cards || []).length;
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    const defaultDay = count < days.length ? days[count] : `Day ${count + 1}`;
+    document.getElementById('modal-day-name').value = defaultDay;
+    document.getElementById('modal-day-focus').value = '';
+    document.getElementById('modal-day-details').value = '';
+  } else {
+    const card = page.cards[dayIdx];
+    document.getElementById('day-modal-title').innerHTML = `${MUI.edit} Edit Schedule Day`;
+    document.getElementById('modal-day-name').value = card.category || `Day ${dayIdx + 1}`;
+    document.getElementById('modal-day-focus').value = card.exercise || '';
+    document.getElementById('modal-day-details').value = card.details || '';
+  }
+
+  openModal('day-modal');
+}
+
+function saveDayModal() {
+  const name = document.getElementById('modal-day-name').value.trim();
+  if (!name) {
+    showToast('Please enter a day label (e.g. Monday)');
+    return;
+  }
+  const focus = document.getElementById('modal-day-focus').value.trim();
+  const details = document.getElementById('modal-day-details').value.trim();
+
+  const ath = getActiveAthlete();
+  const page = ath.pages[activeSessionIndex];
+  if (!page.cards) page.cards = [];
+
+  const dayData = {
+    category: name,
+    exercise: focus,
+    details: details,
+    total_sets: 0
+  };
+
+  if (modalEditingDayIdx === null || modalEditingDayIdx === undefined) {
+    page.cards.push(dayData);
+    showToast(`Added ${name} to schedule`);
+  } else {
+    page.cards[modalEditingDayIdx] = { ...page.cards[modalEditingDayIdx], ...dayData };
+    showToast(`Updated ${name}`);
+  }
+
+  saveAthletesToStorage();
+  closeModal('day-modal');
+  renderBuilderView();
+}
+
+function duplicateDay(idx) {
+  const ath = getActiveAthlete();
+  const page = ath.pages[activeSessionIndex];
+  if (!page || !page.cards || !page.cards[idx]) return;
+  const clone = JSON.parse(JSON.stringify(page.cards[idx]));
+  clone.category = `${clone.category} (Copy)`;
+  page.cards.splice(idx + 1, 0, clone);
+  saveAthletesToStorage();
+  renderBuilderView();
+  showToast('Day duplicated');
+}
+
+function deleteDayPrompt(idx) {
+  const ath = getActiveAthlete();
+  const page = ath.pages[activeSessionIndex];
+  if (!page || !page.cards || !page.cards[idx]) return;
+  const dayName = page.cards[idx].category || `Day #${idx + 1}`;
+  showConfirmModal('Delete Day', `Are you sure you want to remove ${dayName} from this weekly schedule?`, () => {
+    page.cards.splice(idx, 1);
+    saveAthletesToStorage();
+    renderBuilderView();
+    showToast('Day removed from plan');
+  });
+}
+
+function quickAddRestDay() {
+  const ath = getActiveAthlete();
+  const page = ath.pages[activeSessionIndex];
+  if (!page) return;
+  if (!page.cards) page.cards = [];
+  const count = page.cards.length;
+  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const defaultDay = count < days.length ? days[count] : `Day ${count + 1}`;
+  page.cards.push({
+    category: defaultDay,
+    exercise: 'Rest & Recovery',
+    details: 'Full rest day or 20-30 mins light mobility / walking.',
+    total_sets: 0
+  });
+  saveAthletesToStorage();
+  renderBuilderView();
+  showToast(`Added Rest Day (${defaultDay})`);
 }
 
 function saveActiveAthleteRoutine() {
@@ -8709,6 +8987,53 @@ body.focus-open {
   background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
   color: #FFF !important;
   box-shadow: 0 4px 18px rgba(16, 185, 129, 0.4) !important;
+}
+
+/* Weekly Plan / Schedule Cards in Athlete Player */
+.plan-container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 14px !important;
+  padding: 16px 12px !important;
+  width: 100% !important;
+  max-width: 650px !important;
+  margin: 0 auto !important;
+}
+.day-card {
+  background: #111827 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 14px !important;
+  padding: 16px 18px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+}
+.day-name {
+  font-size: 0.76em !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  color: #A78BFA !important;
+  background: rgba(167, 139, 250, 0.12) !important;
+  display: inline-block !important;
+  padding: 3px 10px !important;
+  border-radius: 6px !important;
+  margin-bottom: 8px !important;
+}
+.day-focus {
+  font-size: 1.15em !important;
+  font-weight: 800 !important;
+  color: #F8FAFC !important;
+  margin-bottom: 8px !important;
+  line-height: 1.3 !important;
+}
+.day-details {
+  font-size: 0.88em !important;
+  color: #94A3B8 !important;
+  line-height: 1.6 !important;
+  white-space: pre-line !important;
+  background: rgba(0, 0, 0, 0.25) !important;
+  border-radius: 8px !important;
+  padding: 10px 12px !important;
+  border-left: 3px solid #A78BFA !important;
 }
 
 </style>
