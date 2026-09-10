@@ -9290,23 +9290,26 @@ function updateCloudSyncIndicator(state, message = '') {
   }
   const statusEl = document.getElementById('cloud-sync-status-text');
   if (statusEl) {
+    const cfg = getCloudSyncConfig();
     if (state === 'syncing') {
       statusEl.textContent = 'Syncing...';
       statusEl.style.color = 'var(--teal)';
     } else if (state === 'success') {
       statusEl.textContent = 'Connected & Synced';
       statusEl.style.color = '#10B981';
+    } else if (!cfg.token || state === 'unconfigured') {
+      statusEl.textContent = 'Not Configured (Setup Below)';
+      statusEl.style.color = 'var(--text-muted)';
     } else if (state === 'error') {
       statusEl.textContent = message || 'Sync Error';
       statusEl.style.color = '#EF4444';
     } else {
-      const cfg = getCloudSyncConfig();
       if (cfg.token) {
         statusEl.textContent = 'Ready (Idle)';
         statusEl.style.color = 'var(--text-main)';
       } else {
-        statusEl.textContent = 'Not Configured';
-        statusEl.style.color = 'var(--text-dim)';
+        statusEl.textContent = 'Not Configured (Setup Below)';
+        statusEl.style.color = 'var(--text-muted)';
       }
     }
   }
@@ -9332,7 +9335,7 @@ function openCloudSyncModal() {
   if (gistInput) gistInput.value = cfg.gistId || '';
   if (autoCheckbox) autoCheckbox.checked = cfg.autoSync !== false;
 
-  updateCloudSyncIndicator(cfg.token ? 'idle' : 'error');
+  updateCloudSyncIndicator(cfg.token ? 'idle' : 'unconfigured');
   openModal('cloud-sync-modal');
 }
 
@@ -9569,7 +9572,7 @@ function scheduleCloudAutoPush() {
 
 async function initCloudSync() {
   const cfg = getCloudSyncConfig();
-  updateCloudSyncIndicator(cfg.token ? 'idle' : 'error');
+  updateCloudSyncIndicator(cfg.token ? 'idle' : 'unconfigured');
   if (cfg.token && cfg.gistId && cfg.autoSync !== false) {
     try {
       const res = await fetch(`https://api.github.com/gists/${cfg.gistId}`, {
